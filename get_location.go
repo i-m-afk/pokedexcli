@@ -8,16 +8,14 @@ import (
 	"net/http"
 )
 
-func getLocation(url, next, prev string) ([]byte, error) {
+func getLocation(url string) ([]byte, error) {
 	var res *http.Response
 	var err error
-	if prev != "" {
-		res, err = http.Get(prev)
-	} else if next != "" {
-		res, err = http.Get(next)
-	} else {
-		res, err = http.Get(url)
-	}
+	// TODO If cache exists then don't make request
+	// Match the string(url param)
+	fmt.Printf("URL:\t %s \n", url)
+
+	res, err = http.Get(url)
 	if err != nil {
 		log.Printf("Error making GET request: %v", err)
 		return nil, errors.New("Unable to make GET request")
@@ -36,6 +34,6 @@ func getLocation(url, next, prev string) ([]byte, error) {
 		log.Fatal(err)
 		return nil, errors.New("Cannot parse the response")
 	}
-
+	// TODO insert to cache if not
 	return body, nil
 }

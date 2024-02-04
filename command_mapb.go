@@ -9,10 +9,11 @@ import (
 
 func commandMapb(config *conf) error {
 	locationArea := config.locationArea
+	fmt.Printf("Before MAPB next:\t%v\nprev:\t%v\n", locationArea.Next, locationArea.Previous)
 	var body []byte
 	var err error
 	if locationArea.Previous != "" {
-		body, err = getLocation("", "", locationArea.Previous)
+		body, err = getLocation(locationArea.Previous)
 	} else {
 		return errors.New("Previous is Nil")
 	}
@@ -21,17 +22,18 @@ func commandMapb(config *conf) error {
 	}
 
 	err = json.Unmarshal(body, &locationArea)
+	fmt.Printf("AFTER MAPB next:\t%v\nprev:\t%v\n", locationArea.Next, locationArea.Previous)
 	if err != nil {
 		log.Fatal("Couldn't unmarshal")
 	}
 	for _, result := range locationArea.Results {
 		fmt.Printf("%s\n", result.Name)
 	}
-	// setting to nil to get no result
-	if locationArea.Previous == "https://pokeapi.co/api/v2/location-area/?offset=0&limit=20" {
-		config.locationArea.Previous = ""
-	} else {
-		config.locationArea = locationArea
+	if locationArea.Next == "https://pokeapi.co/api/v2/location-area/?offset=20&limit=20" &&
+		locationArea.Previous == "https://pokeapi.co/api/v2/location-area/?offset=0&limit=20" {
+		locationArea.Next = locationArea.Previous
+		locationArea.Previous = ""
 	}
+	config.locationArea = locationArea
 	return nil
 }
