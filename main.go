@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/i-m-afk/pokedexcli/internal/pokecache"
+	"time"
 )
 
 type conf struct {
@@ -10,10 +11,10 @@ type conf struct {
 }
 
 func main() {
-	cache := pokecache.NewCache()
+	cache := pokecache.NewCache(5 * time.Second)
 	config := &conf{
 		locationArea: LocationArea{},
-		cache:        cache,
+		cache:        *cache,
 	}
 	startRepl(config)
 }
