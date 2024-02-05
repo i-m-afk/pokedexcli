@@ -7,7 +7,7 @@ import (
 	"log"
 )
 
-func commandMapb(config *conf) error {
+func commandMapb(config *conf, args ...string) error {
 	locationArea := config.locationArea
 	var body []byte
 	var err error

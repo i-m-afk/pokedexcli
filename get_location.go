@@ -14,7 +14,7 @@ func getLocation(url string, cache *pokecache.Cache) ([]byte, error) {
 	var err error
 	body, err := cache.GetDataFromCache(url)
 	if err == nil {
-		fmt.Println("Cache hit")
+		// fmt.Println("Cache hit")
 		return body, nil // cached data exists
 	}
 	// new request cache doesn't exists
@@ -38,7 +38,7 @@ func getLocation(url string, cache *pokecache.Cache) ([]byte, error) {
 		return nil, errors.New("Cannot parse the response")
 	}
 
-	fmt.Println("Cache miss")
+	// fmt.Println("Cache miss")
 	cache.AddDataToCache(url, body)
 	return body, nil
 }

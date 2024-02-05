@@ -7,7 +7,7 @@ import (
 	"log"
 )
 
-func commandMap(config *conf) error {
+func commandMap(config *conf, args ...string) error {
 	locationArea := config.locationArea
 	var body []byte
 	var err error
