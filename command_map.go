@@ -9,20 +9,18 @@ import (
 
 func commandMap(config *conf) error {
 	locationArea := config.locationArea
-	fmt.Printf("Before MAP next:\t%v\nprev:\t%v\n", locationArea.Next, locationArea.Previous)
 	var body []byte
 	var err error
 	if locationArea.Next == "" {
-		body, err = getLocation("https://pokeapi.co/api/v2/location-area/")
+		body, err = getLocation("https://pokeapi.co/api/v2/location-area/", &config.cache)
 	} else {
-		body, err = getLocation(locationArea.Next)
+		body, err = getLocation(locationArea.Next, &config.cache)
 	}
 	if err != nil {
 		return errors.New("Some error occured")
 	}
 
 	err = json.Unmarshal(body, &locationArea)
-	fmt.Printf("AFter MAP next:\t%v\nprev:\t%v\n", locationArea.Next, locationArea.Previous)
 	if err != nil {
 		log.Fatal("Couldn't unmarshal")
 	}

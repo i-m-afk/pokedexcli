@@ -3,25 +3,28 @@ package main
 import (
 	"errors"
 	"fmt"
+	"github.com/i-m-afk/pokedexcli/internal/pokecache"
 	"io"
 	"log"
 	"net/http"
 )
 
-func getLocation(url string) ([]byte, error) {
+func getLocation(url string, cache *pokecache.Cache) ([]byte, error) {
 	var res *http.Response
 	var err error
-	// TODO If cache exists then don't make request
-	// Match the string(url param)
-	fmt.Printf("URL:\t %s \n", url)
-
+	body, err := cache.GetDataFromCache(url)
+	if err == nil {
+		fmt.Println("Cache hit")
+		return body, nil // cached data exists
+	}
+	// new request cache doesn't exists
 	res, err = http.Get(url)
 	if err != nil {
 		log.Printf("Error making GET request: %v", err)
 		return nil, errors.New("Unable to make GET request")
 	}
 
-	body, err := io.ReadAll(res.Body)
+	body, err = io.ReadAll(res.Body)
 
 	defer res.Body.Close()
 
@@ -34,6 +37,8 @@ func getLocation(url string) ([]byte, error) {
 		log.Fatal(err)
 		return nil, errors.New("Cannot parse the response")
 	}
-	// TODO insert to cache if not
+
+	fmt.Println("Cache miss")
+	cache.AddDataToCache(url, body)
 	return body, nil
 }
