@@ -22,3 +22,7 @@ func (userPokedex *UserPokedex) AddToPokedex(pokemonInfo api.Pokemon) {
 	// 	fmt.Println(v.Name)
 	// }
 }
+
+func (userPokedex *UserPokedex) GetUserInventory() map[string]api.Pokemon {
+	return userPokedex.inventory
+}
