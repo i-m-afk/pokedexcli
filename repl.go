@@ -9,6 +9,7 @@ import (
 )
 
 func startRepl(config *conf) {
+	fmt.Println("Welcome to the Pokedex!, type help for usage information")
 	inputReader := bufio.NewReader(os.Stdin)
 	for {
 		fmt.Printf("pokedex > ")
@@ -78,6 +79,11 @@ func getCommands() map[string]cliCommand {
 			name:        "explore <location_area>",
 			description: "Explore a location in Pokemon world",
 			callback:    commandExplore,
+		},
+		"catch": {
+			name:        "catch <pokemon_name>",
+			description: "Catch a pokemon",
+			callback:    commandCatch,
 		},
 		"exit": {
 			name:        "exit",

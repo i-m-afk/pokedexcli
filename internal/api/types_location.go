@@ -1,4 +1,4 @@
-package main
+package api
 
 type LocationArea struct {
 	Count    int    `json:"count"`

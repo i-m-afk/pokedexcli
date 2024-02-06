@@ -4,12 +4,16 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/i-m-afk/pokedexcli/internal/api"
 	"io"
 	"log"
 	"net/http"
 )
 
 func commandExplore(config *conf, args ...string) error {
+	if len(args) == 0 {
+		return errors.New("Usage: explore <location_area>")
+	}
 	locationArea := args[0]
 	url := "https://pokeapi.co/api/v2/location-area/" + locationArea
 	fmt.Printf("Exploring %s...\n", locationArea)
@@ -18,7 +22,7 @@ func commandExplore(config *conf, args ...string) error {
 		return err
 	}
 
-	locationAreaInfo := LocationAreaInfo{}
+	locationAreaInfo := api.LocationAreaInfo{}
 	err = json.Unmarshal(body, &locationAreaInfo)
 	if err != nil {
 		log.Fatal("Couldn't unmarshal")
